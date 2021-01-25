@@ -58,11 +58,15 @@ if __name__ == '__main__':
         
         # JSON 
         json_output = {
-            "TotalKes" : content[0],
-            "ActiveKes" : content[1],
-            "Dead" : content[2],
-            "Recovered" : content[3],
-            "Date": content[4]
+            "MalaysiaStat": [
+                {
+                    "TotalKes" : content[0],
+                    "ActiveKes" : content[1],
+                    "Dead" : content[2],
+                    "Recovered" : content[3],
+                    "Date": content[4]
+                }
+            ]
         }
 
         json_write = json.dumps(json_output, indent = 4)
@@ -73,4 +77,5 @@ if __name__ == '__main__':
         with open('stat.json') as json_file:
             bata = json.load(json_file)
             
-            print (bata['Dead'])
+            print (bata['MalaysiaStat'][0]['Dead'])
+            print (type(bata['MalaysiaStat']))
