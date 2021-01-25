@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 import re
 from contextlib import closing
 from bs4 import BeautifulSoup
@@ -55,27 +56,48 @@ if __name__ == '__main__':
         iframeUrl = 'https://e.infogram.com/' + infogram_id
 
         content = get_iframe(iframeUrl)
-        
+        path = '/stat.json'
         # JSON 
-        json_output = {
-            "MalaysiaStat": [
-                {
-                    "TotalKes" : content[0],
-                    "ActiveKes" : content[1],
-                    "Dead" : content[2],
-                    "Recovered" : content[3],
-                    "Date": content[4]
-                }
-            ]
-        }
+        if os.path.getsize('stat.json') > 0:
+            json_output = {
+                "TotalKes" : content[0],
+                "ActiveKes" : content[1],
+                "Dead" : content[2],
+                "Recovered" : content[3],
+                "Date": content[4]
+            }
 
-        json_write = json.dumps(json_output, indent = 4)
+            with open('stat.json') as json_file:
+                data = json.load(json_file)
+                temp = data['MalaysiaStat']
+                temp.append(json_output)
 
-        with open('stat.json', 'w') as outfile:
-            outfile.write(json_write)
+            with open('stat.json', 'w') as f:
+                json.dump(data, f, indent = 4)
+            print ("Output1")
+        else:
+            json_output = {
+                "MalaysiaStat": [
+                    {
+                        "TotalKes" : content[0],
+                        "ActiveKes" : content[1],
+                        "Dead" : content[2],
+                        "Recovered" : content[3],
+                        "Date": content[4]
+                    }
+                ]
+            }
 
-        with open('stat.json') as json_file:
-            bata = json.load(json_file)
+            json_write = json.dumps(json_output, indent = 4)
             
-            print (bata['MalaysiaStat'][0]['Dead'])
-            print (type(bata['MalaysiaStat']))
+            with open('stat.json', 'w') as outfile:
+                outfile.write(json_write)
+            print("Output2")
+
+
+
+        # with open('stat.json') as json_file:
+        #     bata = json.load(json_file)
+            
+        #     print (bata['MalaysiaStat'][0]['Dead'])
+        #     print (type(bata['MalaysiaStat']))
