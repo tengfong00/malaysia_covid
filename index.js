@@ -54,10 +54,19 @@ function getData() {
     createTitle();
     
     let min = max = diff = 0;
+    let confirmArray = [];
+    let dateArray = [];
     const firstCase = apiData.length - 7;
 
-    for (let i = firstCase; i <apiData.length; i++) {
-        let confirm = apiData[i].Confirmed - apiData[i - 1].Confirmed;
+    for (let i = 0; i < apiData.length; i++) {
+        if (apiData[i].Province == "Perak") {
+            confirmArray.push(apiData[i].Confirmed);
+            dateArray.push(apiData[i].Date);
+        }
+    }
+
+    for (let i = 1; i < confirmArray.length; i++) {
+        let confirm = confirmArray[i] - confirmArray[i - 1];
 
         min = (confirm < min || min == undefined ? confirm : min);
         max = (confirm > max || max == undefined ? confirm : max);
@@ -65,15 +74,15 @@ function getData() {
 
     diff = max - min;
 
-    const highestIndex = apiData.length - 1;
+    const highestIndex = confirmArray.length - 1;
 
-    for (let i = firstCase, j = highestIndex; i < apiData.length; i++, j--) {
-        const day = (new Date(apiData[i].Date)).getDate();
-        const cases = apiData[i].Confirmed - apiData[i - 1].Confirmed;
+    for (let i = 1, j = highestIndex; i < confirmArray.length; i++, j--) {
+        const day = (new Date(dateArray[i])).getDate();
+        const cases = confirmArray[i] - confirmArray[i - 1];
         const calculate = (cases - min) / diff;
 
         if(i < highestIndex) {
-            const nextCases = apiData[i + 1].Confirmed - apiData[i].Confirmed;
+            const nextCases = confirmArray[i + 1] - confirmArray[i];
             const nextCalculate = (nextCases - min) / diff;
             const point1 = new Point (spaceBetweenDays * i + 50, graphLow - (graphHeight * calculate));
             const point2 = new Point (spaceBetweenDays * (i + 1) + 50, graphLow - (graphHeight * nextCalculate));
@@ -94,7 +103,7 @@ function getData() {
         drawTextR(day, dayRect, dayColor, Font.systemFont(22));
     }
 
-    let confirm = apiData[7].Confirmed;
+    let confirm = confirmArray[7];
     drawContext.drawText(confirm.toString(), new Point(50, 50));
     
     const img = drawContext.getImage();

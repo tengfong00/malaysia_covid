@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaysia Covid-19 Stats V2</title>
+    <style>
+        body {
+            display:grid;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .space {
+            padding: 3vh;
+        }
+    </style>
+</head>
+<body>
+    <h1>Malaysia Covid-19 Stats V2</h1>
+    <p>The reason for making Version 2 for it, its due to Malaysia recently <br>
+        make a whole new website for display Covid-19 Malaysia Statistics. <br>
+        Previous website, I get data from api.covid19api.com which is easy to use, <br>
+        but it update the API way to get data. Which make me feel annoying. <br>
+    </p>
+
+    <div class="space"></div>
+    <canvas id="graph" width="720" height="450"></canvas>
+    <div class="space"></div>
+</body>
+<script src="https://unpkg.com/papaparse@5.3.1/papaparse.min.js"></script>
+<script src="covidV2.js"></script>
+</html>
